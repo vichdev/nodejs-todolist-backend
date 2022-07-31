@@ -1,25 +1,18 @@
 import { Router, Request, Response } from "express";
-import { ITask } from "../models/ITasks";
+import { Task } from "../models/Tasks";
 import { v4 as uuidV4 } from "uuid";
+import { TasksRepository } from "../repositories/TasksRepository";
 
 const routes = Router();
 
-const tasks: ITask[] = [];
+const tasksRepository = new TasksRepository();
 
 routes.post("/", (req: Request, res: Response) => {
   const { name, description, status } = req.body;
 
-  const task: ITask = {
-    name,
-    description,
-    status,
-    created_at: new Date(),
-    id: uuidV4(),
-  };
+  tasksRepository.create({ name, description, status });
 
-  tasks.push(task);
-
-  return res.status(201).send({ tasks });
+  return res.status(201).send();
 });
 
 routes.get("/", (req: Request, res: Response) => {});
