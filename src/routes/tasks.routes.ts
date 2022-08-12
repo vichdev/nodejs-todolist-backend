@@ -1,20 +1,56 @@
 import { Router, Request, Response } from "express";
-import { Task } from "../models/Tasks";
-import { v4 as uuidV4 } from "uuid";
 import { TasksRepository } from "../repositories/TasksRepository";
+import { CreateTaskService } from "../services/CreateTaskService";
+import { DeleteTaskService } from "../services/DeleteTaskService";
 
 const routes = Router();
 
 const tasksRepository = new TasksRepository();
 
 routes.post("/", (req: Request, res: Response) => {
-  const { name, description, status } = req.body;
+  const { name, description, status, priority } = req.body;
 
-  tasksRepository.create({ name, description, status });
+  const createTaskService = new CreateTaskService(tasksRepository);
+
+  createTaskService.execute({ name, description, status, priority });
 
   return res.status(201).send();
 });
 
-routes.get("/", (req: Request, res: Response) => {});
+routes.get("/", (req: Request, res: Response) => {
+  const { priority } = req.query;
+  const { status } = req.query;
+  const allTasks = tasksRepository.list();
+
+  if (priority && status) {
+    const filtered = allTasks.filter(
+      (task) =>
+        task.priority === Number(priority) && task.status === Number(status)
+    );
+    return res.json(filtered);
+  }
+  if (status) {
+    const filtered = allTasks.filter((task) => task.status === Number(status));
+    return res.json(filtered);
+  }
+  if (priority) {
+    const filtered = allTasks.filter(
+      (task) => task.priority === Number(priority)
+    );
+    return res.json(filtered);
+  }
+
+  return res.json(allTasks);
+});
+
+routes.delete("/:id", (req, res) => {
+  const { id } = req.params;
+
+  const deleteTaskService = new DeleteTaskService(tasksRepository);
+
+  deleteTaskService.execute(id);
+
+  return res.status(200).send();
+});
 
 export { routes };

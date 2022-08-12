@@ -3,8 +3,9 @@ import { v4 as uuidV4 } from "uuid";
 class Task {
   name!: string;
   description!: string;
-  status!: boolean;
+  status!: number;
   created_at!: Date;
+  priority!: number;
   id!: string;
   constructor() {
     if (!this.id) {
