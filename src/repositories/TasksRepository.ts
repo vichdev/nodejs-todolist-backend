@@ -2,6 +2,7 @@ import { Task } from "../models/Tasks";
 import {
   ICreateTaskDTO,
   ITasksRespository,
+  IUpdateTaskDTO,
 } from "./interfaces/ITasksRepository";
 
 class TasksRepository implements ITasksRespository {
@@ -39,6 +40,24 @@ class TasksRepository implements ITasksRespository {
   findTaskByName(name: string): Task {
     const task = this.tasks.find((task) => task.name === name);
     return task;
+  }
+
+  updateTask(
+    id: string,
+    { name, description, status, priority }: IUpdateTaskDTO
+  ): void {
+    const newTask = {
+      id,
+      name,
+      description,
+      status,
+      priority,
+      created_at: new Date(),
+    };
+
+    const taskIndex = this.tasks.findIndex((task) => task.id === id);
+
+    this.tasks[taskIndex] = newTask;
   }
 
   checkId(id: string): Task {

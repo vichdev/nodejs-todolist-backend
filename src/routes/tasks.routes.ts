@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { TasksRepository } from "../repositories/TasksRepository";
 import { CreateTaskService } from "../services/CreateTaskService";
 import { DeleteTaskService } from "../services/DeleteTaskService";
+import { EditTaskService } from "../services/EditTaskService";
 
 const routes = Router();
 
@@ -27,6 +28,7 @@ routes.get("/", (req: Request, res: Response) => {
       (task) =>
         task.priority === Number(priority) && task.status === Number(status)
     );
+
     return res.json(filtered);
   }
   if (status) {
@@ -51,6 +53,22 @@ routes.delete("/:id", (req, res) => {
   deleteTaskService.execute(id);
 
   return res.status(200).send();
+});
+
+routes.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const { name, description, status, priority } = req.body;
+
+  const editTaskService = new EditTaskService(tasksRepository);
+
+  editTaskService.execute(id, {
+    name,
+    description,
+    status,
+    priority,
+  });
+
+  return res.status(201).send();
 });
 
 export { routes };

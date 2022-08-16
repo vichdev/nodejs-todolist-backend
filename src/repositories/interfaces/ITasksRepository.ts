@@ -15,4 +15,11 @@ interface ICreateTaskDTO {
   priority: number;
 }
 
-export { ITasksRespository, ICreateTaskDTO };
+interface IUpdateTaskDTO {
+  name: string;
+  description: string;
+  status: number;
+  priority: number;
+}
+
+export { ITasksRespository, ICreateTaskDTO, IUpdateTaskDTO };
