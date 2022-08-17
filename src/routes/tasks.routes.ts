@@ -8,7 +8,7 @@ const routes = Router();
 
 const tasksRepository = new TasksRepository();
 
-routes.post("/", (req: Request, res: Response) => {
+routes.post("/", (req: Request, res: Response): Response => {
   const { name, description, status, priority } = req.body;
 
   const createTaskService = new CreateTaskService(tasksRepository);
@@ -18,7 +18,7 @@ routes.post("/", (req: Request, res: Response) => {
   return res.status(201).send();
 });
 
-routes.get("/", (req: Request, res: Response) => {
+routes.get("/", (req: Request, res: Response): Response => {
   const { priority } = req.query;
   const { status } = req.query;
   const allTasks = tasksRepository.list();
@@ -45,7 +45,7 @@ routes.get("/", (req: Request, res: Response) => {
   return res.json(allTasks);
 });
 
-routes.delete("/:id", (req, res) => {
+routes.delete("/:id", (req: Request, res: Response): Response => {
   const { id } = req.params;
 
   const deleteTaskService = new DeleteTaskService(tasksRepository);
@@ -55,20 +55,24 @@ routes.delete("/:id", (req, res) => {
   return res.status(200).send();
 });
 
-routes.put("/:id", (req, res) => {
+routes.put("/:id", (req: Request, res: Response): Response => {
   const { id } = req.params;
   const { name, description, status, priority } = req.body;
 
   const editTaskService = new EditTaskService(tasksRepository);
 
-  editTaskService.execute(id, {
-    name,
-    description,
-    status,
-    priority,
-  });
+  if (!name || !description) {
+    return res.status(500).send();
+  } else {
+    editTaskService.execute(id, {
+      name,
+      description,
+      status,
+      priority,
+    });
 
-  return res.status(201).send();
+    return res.status(201).send();
+  }
 });
 
 export { routes };
