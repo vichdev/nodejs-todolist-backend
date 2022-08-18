@@ -9,7 +9,7 @@
 
 ```bash
 # Clone este repositório ou baixe-o do repositório
-$ git clone <https://github.com/vichdev/nodejs-todolist-backend>
+$ git clone https://github.com/vichdev/nodejs-todolist-backend.git
 
 # Acesse a pasta do projeto no terminal/GitBash
 $ code .
