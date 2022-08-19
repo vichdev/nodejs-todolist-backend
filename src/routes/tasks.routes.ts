@@ -13,6 +13,10 @@ routes.post("/", (req: Request, res: Response): Response => {
 
   const createTaskService = new CreateTaskService(tasksRepository);
 
+  if (!name) {
+    return res.status(500).send();
+  }
+
   createTaskService.execute({ name, description, status, priority });
 
   return res.status(201).send();
