@@ -2,7 +2,7 @@ import { TasksRepository } from "../../repositories/TasksRepository";
 import { EditTaskController } from "./editTaskController";
 import { EditTaskUseCase } from "./editTaskUseCase";
 
-const tasksRepository = new TasksRepository();
+const tasksRepository = TasksRepository.getInstance();
 
 const editTaskUseCase = new EditTaskUseCase(tasksRepository);
 

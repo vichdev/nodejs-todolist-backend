@@ -2,7 +2,7 @@ import { TasksRepository } from "../../repositories/TasksRepository";
 import { CreateTaskUseCase } from "./CreateTaskUseCase";
 import { CreateTaskController } from "./createTaskController";
 
-const tasksRepository = new TasksRepository();
+const tasksRepository = TasksRepository.getInstance();
 
 const createTaskUseCase = new CreateTaskUseCase(tasksRepository);
 

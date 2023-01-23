@@ -7,9 +7,17 @@ import {
 
 class TasksRepository implements ITasksRespository {
   private tasks: Task[];
+  private static INSTANCE: TasksRepository;
 
-  constructor() {
+  private constructor() {
     this.tasks = [];
+  }
+
+  public static getInstance(): TasksRepository {
+    if (!TasksRepository.INSTANCE) {
+      TasksRepository.INSTANCE = new TasksRepository();
+    }
+    return TasksRepository.INSTANCE;
   }
 
   create({ description, name, status, priority }: ICreateTaskDTO): void {
