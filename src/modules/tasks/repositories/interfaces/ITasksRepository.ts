@@ -1,4 +1,4 @@
-import { Task } from "../../models/Tasks";
+import { Task } from "../../model/Tasks";
 
 interface ITasksRespository {
   findTaskByName(name: string): Task;

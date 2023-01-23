@@ -1,7 +1,8 @@
-import { ITasksRespository } from "../repositories/interfaces/ITasksRepository";
+import { ITasksRespository } from "../../repositories/interfaces/ITasksRepository";
 
-class DeleteTaskService {
+class DeleteTaskUseCase {
   constructor(private tasksRepository: ITasksRespository) {}
+
   execute(id: string): void {
     const taskExists = this.tasksRepository.checkId(id);
     if (taskExists) {
@@ -12,4 +13,4 @@ class DeleteTaskService {
   }
 }
 
-export { DeleteTaskService };
+export { DeleteTaskUseCase };

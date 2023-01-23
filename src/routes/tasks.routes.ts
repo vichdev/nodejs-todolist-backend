@@ -1,25 +1,16 @@
 import { Router, Request, Response } from "express";
-import { TasksRepository } from "../repositories/TasksRepository";
-import { CreateTaskService } from "../services/CreateTaskService";
-import { DeleteTaskService } from "../services/DeleteTaskService";
-import { EditTaskService } from "../services/EditTaskService";
+import { TasksRepository } from "../modules/tasks/repositories/TasksRepository";
+import { EditTaskService } from "../modules/tasks/services/EditTaskService";
+import { createTaskController } from "../modules/tasks/useCases/createTask";
+import { deleteTaskController } from "../modules/tasks/useCases/deleteTask";
+import { editTaskController } from "../modules/tasks/useCases/editTask";
 
 const routes = Router();
 
 const tasksRepository = new TasksRepository();
 
 routes.post("/", (req: Request, res: Response): Response => {
-  const { name, description, status, priority } = req.body;
-
-  const createTaskService = new CreateTaskService(tasksRepository);
-
-  if (!name) {
-    return res.status(500).send();
-  }
-
-  createTaskService.execute({ name, description, status, priority });
-
-  return res.status(201).send();
+  return createTaskController.handle(req, res);
 });
 
 routes.get("/", (req: Request, res: Response): Response => {
@@ -50,33 +41,11 @@ routes.get("/", (req: Request, res: Response): Response => {
 });
 
 routes.delete("/:id", (req: Request, res: Response): Response => {
-  const { id } = req.params;
-
-  const deleteTaskService = new DeleteTaskService(tasksRepository);
-
-  deleteTaskService.execute(id);
-
-  return res.status(200).send();
+  return deleteTaskController.handle(req, res);
 });
 
 routes.put("/:id", (req: Request, res: Response): Response => {
-  const { id } = req.params;
-  const { name, description, status, priority } = req.body;
-
-  const editTaskService = new EditTaskService(tasksRepository);
-
-  if (!name || !description) {
-    return res.status(500).send();
-  } else {
-    editTaskService.execute(id, {
-      name,
-      description,
-      status,
-      priority,
-    });
-
-    return res.status(201).send();
-  }
+  return editTaskController.handle(req, res);
 });
 
 export { routes };

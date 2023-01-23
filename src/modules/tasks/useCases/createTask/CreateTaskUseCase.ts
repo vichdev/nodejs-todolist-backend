@@ -1,4 +1,4 @@
-import { ITasksRespository } from "../repositories/interfaces/ITasksRepository";
+import { ITasksRespository } from "../../repositories/interfaces/ITasksRepository";
 
 interface IRequest {
   name: string;
@@ -7,7 +7,7 @@ interface IRequest {
   priority: number;
 }
 
-class CreateTaskService {
+class CreateTaskUseCase {
   constructor(private tasksRepository: ITasksRespository) {}
   execute({ name, description, status, priority }: IRequest): void {
     const taskAlreadyExists = this.tasksRepository.findTaskByName(name);
@@ -19,4 +19,4 @@ class CreateTaskService {
   }
 }
 
-export { CreateTaskService };
+export { CreateTaskUseCase };
